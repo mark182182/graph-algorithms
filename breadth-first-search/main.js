@@ -11,10 +11,13 @@ class Graph {
     }
   }
 
-  addAdjecentNode(node, adjecentNode) {
-    const currentAdjecentNodes = this.adjecencyList.get(node);
-    if (currentAdjecentNodes) {
-      this.adjecencyList.set(node, [...currentAdjecentNodes, adjecentNode]);
+  addAdjecentNodes(referenceNode, adjecentNodes) {
+    const nodeExists = this.adjecencyList.get(referenceNode);
+    if (nodeExists) {
+      for (const node in adjecentNodes) {
+        const currentAdjecentNodes = this.adjecencyList.get(referenceNode);
+        this.adjecencyList.set(referenceNode, [...currentAdjecentNodes, adjecentNodes[node]]);
+      }
     } else {
       console.log('Node does not exist');
     }
@@ -23,17 +26,13 @@ class Graph {
 
 const graph = new Graph();
 
-graph.addNodes(['A', 'B', 'C', 'D', 'E']);
+graph.addNodes(['K', 'T', 'M', 'J', 'N', 'F']);
 
-graph.addAdjecentNode('A', 'B');
-graph.addAdjecentNode('A', 'C');
-graph.addAdjecentNode('B', 'A');
-graph.addAdjecentNode('B', 'C');
-graph.addAdjecentNode('B', 'D');
-graph.addAdjecentNode('C', 'A');
-graph.addAdjecentNode('C', 'B');
-graph.addAdjecentNode('D', 'B');
-graph.addAdjecentNode('D', 'E');
-graph.addAdjecentNode('E', 'D');
+graph.addAdjecentNodes('K', ['T', 'M', 'J']);
+graph.addAdjecentNodes('T', ['K', 'M']);
+graph.addAdjecentNodes('M', ['K', 'T', 'J', 'N', 'F']);
+graph.addAdjecentNodes('J', ['K', 'M', 'F']);
+graph.addAdjecentNodes('N', ['M', 'F']);
+graph.addAdjecentNodes('F', ['M', 'J']);
 
 console.log(graph);
