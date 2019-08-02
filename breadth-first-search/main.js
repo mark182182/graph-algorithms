@@ -2,6 +2,7 @@ class Graph {
   constructor() {
     this.nodes = [];
     this.adjecencyList = new Map();
+    this.edges = 0;
   }
 
   addNodes(nodesToAdd) {
@@ -24,6 +25,55 @@ class Graph {
   }
 }
 
+class Queue {
+  constructor() {
+    this.stack = [];
+  }
+
+  enqueue(element) {
+    this.stack = [...this.stack, element];
+  }
+
+  dequeue() {
+    let newStack = [];
+    for (const element in this.stack) {
+      if (element > 0) {
+        newStack = [...newStack, this.stack[element]];
+      }
+    }
+    this.stack = newStack;
+  }
+
+  getLength() {
+    return this.stack.length;
+  }
+
+}
+
+class GraphSearch {
+  constructor() {
+    this.visitedNodes = [];
+    this.stack = new Queue();
+  }
+
+  breadthFirstSearch(graph) {
+    if (graph instanceof Graph) {
+      for (const node in graph.nodes) {
+        console.log(`Visit  ${graph.nodes[node]}`);
+        this.stack.enqueue(graph.nodes[node]);
+        this.visitedNodes = [...this.visitedNodes, graph.nodes[node]];
+        const adjecentNodes = graph.adjecencyList.get(graph.nodes[node]);
+        for (const node in adjecentNodes) {
+          this.stack.enqueue(adjecentNodes[node]);
+        }
+        this.stack.dequeue();
+      }
+    } else {
+      console.log('Must be of type Graph');
+    }
+  }
+}
+
 const graph = new Graph();
 
 graph.addNodes(['K', 'T', 'M', 'J', 'N', 'F']);
@@ -36,3 +86,7 @@ graph.addAdjecentNodes('N', ['M', 'F']);
 graph.addAdjecentNodes('F', ['M', 'J']);
 
 console.log(graph);
+
+const search = new GraphSearch();
+search.breadthFirstSearch(graph);
+console.log(search.stack);
